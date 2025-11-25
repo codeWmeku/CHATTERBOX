@@ -117,7 +117,9 @@
 @endsection
 
 @section('scripts')
+<script>
 function openSignUpModal() {
     window.location.href = "{{ route('signin') }}?mode=signup";
 }
+</script>
 @endsection

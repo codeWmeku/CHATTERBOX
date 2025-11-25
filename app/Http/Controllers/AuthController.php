@@ -45,16 +45,22 @@ class AuthController extends Controller
         $request->validate([
             'first_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
-            'name' => 'required_without:first_name|string|max:255',
+            // allow name to be nullable; we'll enforce at least one of name or first_name below
+            'name' => 'nullable|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'username' => 'required|string|max:255|unique:users',
             'phone' => 'nullable|string|max:30',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
+        // Ensure at least a name or a first_name is provided
+        if (! $request->filled('name') && ! $request->filled('first_name')) {
+            return back()->withErrors(['name' => 'Please provide a full name or a first name.'])->withInput();
+        }
+
         $first = $request->input('first_name');
         $last = $request->input('last_name');
-        $fullName = $request->input('name') ?? trim(implode(' ', array_filter([$first, $last])));
+        $fullName = $request->input('name') ?: trim(implode(' ', array_filter([$first, $last])));
 
         $user = User::create([
             'name' => $fullName,

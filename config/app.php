@@ -86,6 +86,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Feature Flags
+    |--------------------------------------------------------------------------
+    |
+    | Toggle features for local/dev environment. For example, registering
+    | new users can be enabled/disabled via the `ALLOW_REGISTRATION` env var.
+    |
+    */
+
+    'allow_registration' => env('ALLOW_REGISTRATION', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
     |
